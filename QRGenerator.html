@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            color: #333;
+            text-align: center;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #6c63ff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Input and Button Styling */
+        input[type="text"] {
+            width: 80%;
+            padding: 10px 15px;
+            margin: 10px auto;
+            font-size: 1rem;
+            border: 2px solid #6c63ff;
+            border-radius: 5px;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4a47a3;
+            box-shadow: 0 0 8px rgba(106, 97, 242, 0.5);
+        }
+
+        button {
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4a47a3;
+        }
+
+        /* QR Code Container */
+        #qr-code {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px dashed #6c63ff;
+            border-radius: 10px;
+            background: #f9f9f9;
+            display: inline-block;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>QR Code Generator</h1>
+        <p>Enter text or a URL to generate a QR code:</p>
+        <input type="text" id="input-text" placeholder="Enter text or URL" />
+        <button onclick="generateQRCode()">Generate QR Code</button>
+        <div id="qr-code"></div>
+    </div>
+    <footer>
+        Made with ❤ by Onyangoric
+    </footer>
+
+    <script>
+        function generateQRCode() {
+            const text = document.getElementById('input-text').value;
+            const qrCodeContainer = document.getElementById('qr-code');
+            
+            // Clear previous QR code
+            qrCodeContainer.innerHTML = "";
+
+            // Generate new QR code
+            if (text.trim()) {
+                new QRCode(qrCodeContainer, {
+                    text: text,
+                    width: 256,
+                    height: 256,
+                });
+            } else {
+                alert("Please enter some text or a URL!");
+            }
+        }
+    </script>
+</body>
+</html>
