@@ -48,25 +48,58 @@
         /* Input Styling */
         .input-container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 15px;
             align-items: center;
             margin-bottom: 20px;
         }
 
         input[type="text"] {
-            flex: 1;
+            width: 90%;
             padding: 10px 15px;
             font-size: 1rem;
             border: 2px solid #6c63ff;
             border-radius: 5px;
             outline: none;
             transition: all 0.3s ease-in-out;
-            margin-right: 10px;
         }
 
         input[type="text"]:focus {
             border-color: #4a47a3;
             box-shadow: 0 0 8px rgba(106, 97, 242, 0.5);
+        }
+
+        /* Color Selection */
+        .color-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        #choose-color-btn {
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        #choose-color-btn:hover {
+            background-color: #4a47a3;
+        }
+
+        #color-picker {
+            display: none;
+            position: absolute;
+            top: calc(100% + 5px); /* Position just below the button */
+            left: 0;
+            z-index: 10;
         }
 
         button {
@@ -118,11 +151,15 @@
 <body>
     <div class="container">
         <h1>QR Code Generator</h1>
-        <p>Generate and download your own QR codes with ease!</p>
+        <p>Generate and download your own QR codes with custom colors!</p>
 
         <!-- Input Section -->
         <div class="input-container">
             <input type="text" id="input-text" placeholder="Enter text or URL" />
+            <div class="color-container">
+                <button id="choose-color-btn" onclick="toggleColorPicker()">Choose QR Code Color</button>
+                <input type="color" id="color-picker" onchange="updateColor()" />
+            </div>
             <button onclick="generateQRCode()">Generate</button>
         </div>
 
@@ -140,6 +177,20 @@
     <script>
         let qrCodeContainer = document.getElementById('qr-code');
         let downloadBtn = document.getElementById('download-btn');
+        let colorPicker = document.getElementById('color-picker');
+        let chooseColorBtn = document.getElementById('choose-color-btn');
+        let selectedColor = "#000000";
+
+        function toggleColorPicker() {
+            // Toggle the visibility of the color picker
+            colorPicker.style.display = colorPicker.style.display === "block" ? "none" : "block";
+        }
+
+        function updateColor() {
+            selectedColor = colorPicker.value;
+            chooseColorBtn.style.backgroundColor = selectedColor; // Change button background
+            toggleColorPicker(); // Hide color picker after selection
+        }
 
         function generateQRCode() {
             const text = document.getElementById('input-text').value;
@@ -154,6 +205,8 @@
                     text: text,
                     width: 256,
                     height: 256,
+                    colorDark: selectedColor, // Use the selected color
+                    colorLight: "#ffffff",
                 });
 
                 // Show download button after QR code is generated
