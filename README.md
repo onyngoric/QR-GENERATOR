@@ -33,5 +33,5 @@ Once the QR code is generated, click the Download QR Code button to save it as a
  -JavaScript: Handles the QR code generation, user interactions, and color customization.
  -qrcode.js: A JavaScript library used to generate the QR codes.
  
-#License
+# License
 This app is a product of Onyangoric.
