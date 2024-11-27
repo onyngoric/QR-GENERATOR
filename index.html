@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
+    <!-- Add Favicon -->
+    <link rel="icon" href="img/favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* General Styling */
         * {
@@ -12,187 +15,183 @@
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #FAF3E0; /* Cream Background */
+            color: #333333;
             display: flex;
             flex-direction: column;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #74ebd5, #9face6);
-            color: #333;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
 
-        /* Main Container */
+        /* Navbar Styling */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #F0E6D2; /* Light Cream Background for Navbar */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .navbar a {
+            color: #333333;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 8px 16px;
+            margin: 0 12px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #6C63FF;
+        }
+
+        /* Container Styling */
         .container {
-            max-width: 500px;
             width: 90%;
-            background: white;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 20px;
+            max-width: 400px;
             text-align: center;
-            margin: auto;
+            padding: 30px;
+            background: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         h1 {
-            color: #6c63ff;
             font-size: 2rem;
-            margin-bottom: 10px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333333;
         }
 
         p {
-            color: #555;
             font-size: 1rem;
-            margin-bottom: 20px;
-        }
-
-        /* Input Styling */
-        .input-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
+            color: #666666;
             margin-bottom: 20px;
         }
 
         input[type="text"] {
-            width: 90%;
-            padding: 10px 15px;
+            width: 100%;
+            padding: 12px;
             font-size: 1rem;
-            border: 2px solid #6c63ff;
-            border-radius: 5px;
+            border: 1px solid #CCCCCC;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            background: #F7F7F7;
+            color: #333333;
             outline: none;
-            transition: all 0.3s ease-in-out;
         }
 
-        input[type="text"]:focus {
-            border-color: #4a47a3;
-            box-shadow: 0 0 8px rgba(106, 97, 242, 0.5);
+        input[type="text"]::placeholder {
+            color: #888888;
         }
 
-        /* Color Selection */
-        .color-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            position: relative;
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background: #6C63FF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #504DC6;
         }
 
         #choose-color-btn {
-            background-color: #6c63ff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
+            margin-top: 10px;
             font-size: 1rem;
-            border-radius: 5px;
+            background: #F7F7F7;
+            color: #333333;
+            border: 1px solid #CCCCCC;
+            padding: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            position: relative;
         }
 
         #choose-color-btn:hover {
-            background-color: #4a47a3;
+            background: #E0E0E0;
         }
 
         #color-picker {
             display: none;
-            position: absolute;
-            top: calc(100% + 5px); /* Position just below the button */
-            left: 0;
-            z-index: 10;
         }
 
-        button {
-            background-color: #6c63ff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #4a47a3;
-        }
-
-        /* QR Code Display */
-        #qr-code-container {
-            margin: 20px 0;
-        }
-
+        /* QR Code Section */
         #qr-code {
-            display: inline-block;
-            padding: 15px;
-            border: 2px dashed #6c63ff;
-            border-radius: 10px;
-            background: #f9f9f9;
+            margin-top: 20px;
         }
 
         #download-btn {
-            margin-top: 10px;
-        }
-
-        /* Ad Sections */
-        .ad-section {
-            background-color: #f3f3f3;
+            display: none;
+            margin-top: 15px;
             padding: 10px;
-            margin: 15px auto;
-            text-align: center;
-            border: 1px dashed #ccc;
-            font-size: 0.9rem;
-            color: #555;
+            background: #6C63FF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
-        /* Footer */
+        #download-btn:hover {
+            background: #504DC6;
+        }
+
         footer {
-            text-align: center;
-            padding: 10px 0;
-            font-size: 0.9rem;
-            color: #777;
-            background: #fff;
-            width: 100%;
-            margin-top: auto;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.8rem;
+            color: #888888;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-    <!-- Top Ad Section -->
-    <div class="ad-section">
-        <!-- Placeholder for Google Ads -->
-        <p>Ad Space - Insert Google AdSense Code Here</p>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <img src="img/Sai_logo.png" alt="Logo">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
     </div>
 
+    <!-- Main Content -->
     <div class="container">
         <h1>QR Code Generator</h1>
-        <p>Generate and download your own QR codes with custom colors!</p>
+        <p>Generate and customize QR codes with ease.</p>
 
-        <!-- Input Section -->
-        <div class="input-container">
-            <input type="text" id="input-text" placeholder="Enter text or URL" />
-            <div class="color-container">
-                <button id="choose-color-btn" onclick="toggleColorPicker()">Choose QR Code Color</button>
-                <input type="color" id="color-picker" onchange="updateColor()" />
-            </div>
-            <button onclick="generateQRCode()">Generate</button>
-        </div>
+        <input type="text" id="input-text" placeholder="Enter text or URL" />
+        <button id="choose-color-btn" onclick="toggleColorPicker()">Choose QR Code Color</button>
+        <input type="color" id="color-picker" onchange="updateColor()" />
+        <button onclick="generateQRCode()">Generate QR Code</button>
 
-        <!-- QR Code Display Section -->
-        <div id="qr-code-container">
-            <div id="qr-code"></div>
-            <button id="download-btn" style="display: none;" onclick="downloadQRCode()">Download QR Code</button>
-        </div>
+        <div id="qr-code"></div>
+        <button id="download-btn" onclick="downloadQRCode()">Download QR Code</button>
     </div>
 
-    <!-- Bottom Ad Section -->
-    <div class="ad-section">
-        <!-- Placeholder for Google Ads -->
-        <p>Ad Space - Insert Google AdSense Code Here</p>
-    </div>
-
+    <!-- Footer -->
     <footer>
         Made with ❤ by Onyangoric
     </footer>
@@ -201,38 +200,30 @@
         let qrCodeContainer = document.getElementById('qr-code');
         let downloadBtn = document.getElementById('download-btn');
         let colorPicker = document.getElementById('color-picker');
-        let chooseColorBtn = document.getElementById('choose-color-btn');
         let selectedColor = "#000000";
 
         function toggleColorPicker() {
-            // Toggle the visibility of the color picker
             colorPicker.style.display = colorPicker.style.display === "block" ? "none" : "block";
         }
 
         function updateColor() {
             selectedColor = colorPicker.value;
-            chooseColorBtn.style.backgroundColor = selectedColor; // Change button background
-            toggleColorPicker(); // Hide color picker after selection
         }
 
         function generateQRCode() {
             const text = document.getElementById('input-text').value;
-
-            // Clear previous QR code
             qrCodeContainer.innerHTML = "";
             downloadBtn.style.display = "none";
 
-            // Generate new QR code
             if (text.trim()) {
-                const qrCode = new QRCode(qrCodeContainer, {
+                new QRCode(qrCodeContainer, {
                     text: text,
                     width: 256,
                     height: 256,
-                    colorDark: selectedColor, // Use the selected color
-                    colorLight: "#ffffff",
+                    colorDark: selectedColor,
+                    colorLight: "#FFFFFF",
                 });
 
-                // Show download button after QR code is generated
                 setTimeout(() => {
                     downloadBtn.style.display = "inline-block";
                 }, 500);
@@ -253,5 +244,6 @@
             }
         }
     </script>
+
 </body>
 </html>
